@@ -13,14 +13,18 @@ data_coverage = {
     "defaultStyle": "mask"
 }
 
+# deleting
+try:
+    geoserver_manager.delete_store(data_coverage["name"])
+    #geoserver_manager.delete_layer(data_coverage["name"])
+except Exception, e:
+    log.error(e)
 
 # publishing
-# try:
-#     #geoserver_manager.delete_store(data_coverage["name"])
-#     #geoserver_manager.delete_layer(data_coverage["name"])
-#     #geoserver_manager.publish_coveragestore(data_coverage)
-# except Exception, e:
-#     log.error(e)
+try:
+    geoserver_manager.publish_coveragestore(data_coverage)
+except Exception, e:
+    log.error(e)
 
 
 # publishing
