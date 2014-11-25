@@ -1,0 +1,2 @@
+include *.md *.txt *.json
+recursive-include geobricks_raster_correlation *
