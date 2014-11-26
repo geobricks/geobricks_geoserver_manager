@@ -16,7 +16,7 @@ class GeoserverManager():
             self.gs_master = Catalog(config["geoserver_master"])
             self._initialize_geoserver(self.gs_master)
         else:
-            raise Exception('config["geoserver_master"] has to be mapped to a running Geoserver', 400)
+            raise Exception('config["geoserver_master"] has to be mapped to a running Geoserver')
         if "geoserver_slaves" in config:
             for gs_slave in config["geoserver_slaves"]:
                 gs = Catalog(gs_slave)
