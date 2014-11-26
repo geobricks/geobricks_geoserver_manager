@@ -22,7 +22,7 @@ Example of how to publish a coveragestore
 ```python
 
 data_coverage = {
-    "name": "raster_name",
+    "layerName": "raster_name",
     "path": "../test_data/MODIS/MOD13A2_3857.tif",
     # optional workspace (otherwise it uses the defautl one)
     "workspace": "test_workspace",
