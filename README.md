@@ -1,4 +1,4 @@
-Geobricks Geoserver Manager for clusters
+Geobricks Manager for Geoserver Clusters
 =====================
 
 The main purpose of this project is to provide a configurable entry point to handle a cluster of Geoservers.
