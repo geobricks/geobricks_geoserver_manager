@@ -9,7 +9,7 @@ setup(
     packages=find_packages(),
     license='LICENSE.txt',
     long_description=open('README.md').read(),
-    description='Geobricks library to manage Geoserver Instances',
+    description='Geobricks library to manage Geoserver clusters.',
     install_requires=[
         'gsconfig'
     ],

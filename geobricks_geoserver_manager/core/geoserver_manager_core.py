@@ -1,8 +1,6 @@
-from datetime import datetime, timedelta
 from geoserver.catalog import Catalog
 from geoserver.resource import FeatureType
-from geobricks_processing.utils.log import logger
-import json
+from geobricks_geoserver_manager.utils.log import logger
 
 log = logger("geobricks_geoserver_manager.geoserver_manager_core")
 
@@ -31,7 +29,7 @@ class GeoserverManager():
 
     def publish_coveragestore(self, data, overwrite=False):
         workspace = self.gs_master.get_default_workspace() if "workspace" not in data else self.check_workspace(data["workspace"], False)
-        name = data["name"]; path = data["path"]
+        name = data["layerName"]; path = data["path"]
         # publish
         self.gs_master.create_coveragestore(name, path, workspace, overwrite)
         # setting default style
@@ -46,7 +44,7 @@ class GeoserverManager():
             # @todo native_srs doesn't seem to get detected, even when in the DB
             # metadata (at least for postgis in geometry_columns) and then there
             # will be a misconfigured layer
-            name = data["name"]
+            name = data["layerName"]
             title = data["title"] if "title" in data else name
             store = self.gs_master.get_store(data["store"])
             #if native_crs is None: raise ValueError("must specify native_crs")
@@ -100,7 +98,8 @@ class GeoserverManager():
         if reload_gs_slaves:
             self.reload_gs_slaves()
 
-    def check_workspace(self, name, reload_gs_slaves=True, uri="http://none.org"):
+    def check_workspace(self, name, reload_gs_slaves=True, uri=None):
+        uri = "http://localhost:9090/" + name
         if self.gs_master.get_workspace(name) is None:
             self.gs_master.create_workspace(name, uri)
         if reload_gs_slaves:
@@ -111,3 +110,29 @@ class GeoserverManager():
         if reload_gs_master: self.gs_master.reload()
         for gs_slave in  self.gs_slaves:
             self.gs_slave.reload()
+
+# TODO: probably it should be in the metadata handler, here there should be just a check about it
+def sanitize_name(name):
+    """
+    This method clean the names, should be avoided to use dots as names and white spaces
+    :param name: name of the layer
+    :return: sanitized name
+    """
+    name = name.replace(".", "")
+    name = name.replace(" ", "_")
+    name = name.lower()
+    return name
+
+
+def check_name(name, sanitize=True):
+    """
+    This method check the names, should be avoided to use dots as names and white spaces
+    :param name: name of the layer
+    :return: True False and in case a sanitized name
+    """
+    if "." in name or " " in name or name.islower() is False:
+        if sanitize:
+            return False, sanitize_name(name)
+        else:
+            False
+    return True

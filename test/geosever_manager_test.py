@@ -7,15 +7,14 @@ log = logger("geoserver_manager_test")
 geoserver_manager = GeoserverManager(config)
 
 data_coverage = {
-    "name": "test_gsconfig11",
-    "path": "/home/vortex/Desktop/LAYERS/MOROCCO_MICHELA/to_publish/original/wheat_mask.tif",
-    "workspace": "daje",
-    "defaultStyle": "mask"
+    "layerName": "MOD13A2_3857",
+    "path": "../test_data/MODIS/MOD13A2/MOD13A2_3857.tif",
+    "workspace": "workspace_test",
 }
 
 # deleting
 try:
-    geoserver_manager.delete_store(data_coverage["name"])
+    geoserver_manager.delete_store(data_coverage["layerName"])
     #geoserver_manager.delete_layer(data_coverage["name"])
 except Exception, e:
     log.error(e)
@@ -30,14 +29,14 @@ except Exception, e:
 # publishing
 
 data_postgis_table = {
-    "name": "gaul0_3857_test",
+    "layerName": "gaul0_3857_test",
     "store": "daje-fenix",
     "workspace": "daje",
     "defaultStyle": "gaul0_highlight_polygon"
 }
 
 try:
-    geoserver_manager.delete_layer(data_postgis_table["name"])
+    geoserver_manager.delete_layer(data_postgis_table["layerName"])
 except Exception, e:
     log.error(e)
 
