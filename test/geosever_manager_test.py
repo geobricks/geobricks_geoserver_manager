@@ -8,20 +8,20 @@ geoserver_manager = GeoserverManager(config)
 
 data_coverage = {
     "layerName": "MOD13A2_3857",
-    "path": "../test_data/MODIS/MOD13A2/MOD13A2_3857.tif",
     "workspace": "workspace_test",
 }
+path = "../test_data/MODIS/MOD13A2/MOD13A2_3857.tif"
 
 # deleting
 try:
     geoserver_manager.delete_store(data_coverage["layerName"])
-    #geoserver_manager.delete_layer(data_coverage["name"])
+    #geoserver_manager.delete_layer(data_coverage["layerName"])
 except Exception, e:
     log.error(e)
 
 # publishing
 try:
-    geoserver_manager.publish_coveragestore(data_coverage)
+    geoserver_manager.publish_coveragestore(path, data_coverage)
 except Exception, e:
     log.error(e)
 

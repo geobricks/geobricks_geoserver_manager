@@ -27,9 +27,9 @@ class GeoserverManager():
         geoserver.username = self.config["username"]
         geoserver.password = self.config["password"]
 
-    def publish_coveragestore(self, data, overwrite=False):
+    def publish_coveragestore(self, path, data, overwrite=False):
         workspace = self.gs_master.get_default_workspace() if "workspace" not in data else self.check_workspace(data["workspace"], False)
-        name = data["layerName"]; path = data["path"]
+        name = data["layerName"]
         # publish
         self.gs_master.create_coveragestore(name, path, workspace, overwrite)
         # setting default style
@@ -105,6 +105,9 @@ class GeoserverManager():
         if reload_gs_slaves:
             self.reload_gs_slaves()
         return self.gs_master.get_workspace(name)
+
+    def get_default_workspace_name(self):
+        return self.gs_master.get_default_workspace().name
 
     def reload_gs_slaves(self, reload_gs_master=False):
         if reload_gs_master: self.gs_master.reload()
