@@ -4,7 +4,7 @@ from geobricks_geoserver_manager.config.config import config
 settings = {
     # Logging configurations
     "logging": {
-        "level": config["logging"]["level"],
+        "level": config["settings"]["logging"]["level"],
         "format": "%(asctime)s | %(levelname)-8s | %(name)-20s | Line: %(lineno)-5d | %(message)s",
         "datefmt": "%d-%m-%Y | %H:%M:%s"
     }

@@ -2,7 +2,7 @@ from geoserver.catalog import Catalog
 from geoserver.resource import FeatureType
 from geobricks_geoserver_manager.utils.log import logger
 
-log = logger("geobricks_geoserver_manager.geoserver_manager_core")
+log = logger(__file__)
 
 class GeoserverManager():
 
@@ -11,6 +11,7 @@ class GeoserverManager():
 
     def __init__(self, config, disable_ssl_certificate_validation=False):
         # settings
+        config = config["settings"]["geoserver"]
         self.config = config
         if "geoserver_master" in config:
             self.gs_master = Catalog(config["geoserver_master"])
@@ -37,6 +38,7 @@ class GeoserverManager():
             self.set_style(name, data["defaultStyle"], False)
         # reload geoserver slaves
         self.reload_gs_slaves()
+        return True
 
     def publish_postgis_table(self, data, reload_gs_slaves=True, native_crs=None, srs=None, overwrite=False):
         try:
@@ -90,6 +92,7 @@ class GeoserverManager():
         # reload slaves
         if reload_gs_slaves:
             self.reload_gs_slaves()
+        return True
 
     def delete_layer(self, name, purge=True, recurse=True, reload_gs_slaves=True):
         layer = self.gs_master.get_layer(name)
