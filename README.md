@@ -2,7 +2,7 @@ Geobricks Manager for Geoserver Clusters
 =====================
 
 The main purpose of this project is to provide a configurable entry point to handle a cluster of Geoservers.
-It uses as dependency [link gscofing]: https://github.com/boundlessgeo/gsconfig as base REST engine to publish the data.
+It uses as dependency [link gscofing]:https://github.com/boundlessgeo/gsconfig as base REST engine to publish the data.
 
 Example to configure a cluster of Geoservers
 ```python
