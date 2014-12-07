@@ -24,7 +24,7 @@ Example of how to publish a coveragestore
 data_coverage = {
     "layerName": "raster_name",
     "path": "../test_data/MODIS/MOD13A2_3857.tif",
-    # optional workspace (otherwise it uses the defautl one)
+    # optional workspace (otherwise it uses the default Geoserver master one)
     "workspace": "test_workspace",
     # optional style to be applied to the layer
     "defaultStyle": "mask"
