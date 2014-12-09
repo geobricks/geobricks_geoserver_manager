@@ -22,10 +22,13 @@ config = {
 
         # geoserver settings
         "geoserver": {
-            "geoserver_master": "http://localhost:9090/geoserver/rest",
             "geoserver_slaves": [],
-            "username": "admin",
-            "password": "geoserver",
+             # "geoserver_master": "http://localhost:9090/geoserver/rest",
+             # "username": "admin",
+             # "password": "geoserver",
+            "geoserver_master": "http://lprapp16.fao.org:20100/geoserver/rest",
+            "username": "fenix",
+            "password": "Fenix2014",
         }
 
     }

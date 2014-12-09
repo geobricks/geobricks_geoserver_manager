@@ -6,10 +6,6 @@ from geobricks_geoserver_manager.core.geoserver_manager_core import GeoserverMan
 log = logger(__file__)
 
 
-
-
-
-
 data_coverage = {
     "layerName": "MOD13A2_3857",
     "workspace": "workspace_test",

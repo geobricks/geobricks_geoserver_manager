@@ -12,6 +12,9 @@ class GeoserverManager():
     def __init__(self, config, disable_ssl_certificate_validation=False):
         # settings
         config = config["settings"]["geoserver"]
+        log.info(config["geoserver_master"])
+        log.info(config["password"])
+        log.info(config["username"])
         self.config = config
         if "geoserver_master" in config:
             self.gs_master = Catalog(config["geoserver_master"])
@@ -102,7 +105,8 @@ class GeoserverManager():
             self.reload_gs_slaves()
 
     def check_workspace(self, name, reload_gs_slaves=True, uri=None):
-        uri = "http://localhost:9090/" + name
+        uri = self.gs_master.service_url + "/" + name
+        print uri
         if self.gs_master.get_workspace(name) is None:
             self.gs_master.create_workspace(name, uri)
         if reload_gs_slaves:
