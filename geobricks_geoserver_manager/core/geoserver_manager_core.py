@@ -1,6 +1,6 @@
 from geoserver.catalog import Catalog
 from geoserver.resource import FeatureType
-from geobricks_geoserver_manager.utils.log import logger
+from geobricks_common.core.log import logger
 
 log = logger(__file__)
 
