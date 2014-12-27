@@ -3,3 +3,4 @@
 /docs/
 *.iml
 *.in~
+/GeobricksGeoserverManager.egg-info/
