@@ -1,6 +1,7 @@
 from geoserver.catalog import Catalog
 from geoserver.resource import FeatureType
 from geobricks_common.core.log import logger
+from geobricks_common.core.filesystem import sanitize_name
 
 log = logger(__file__)
 
@@ -31,8 +32,11 @@ class GeoserverManager():
         geoserver.username = self.config["username"]
         geoserver.password = self.config["password"]
 
-    def publish_coveragestore(self, path, data, overwrite=False):
+    def publish_coveragestore(self, path, data, overwrite=False, reload_gs_slaves=True):
         workspace = self.gs_master.get_default_workspace() if "workspace" not in data else self.check_workspace(data["workspace"], False)
+        if "layerName" not in data:
+            raise Exception("No layerName found in the metadata")
+
         name = data["layerName"]
         # publish
         self.gs_master.create_coveragestore(name, path, workspace, overwrite)
@@ -40,7 +44,8 @@ class GeoserverManager():
         if "defaultStyle" in data:
             self.set_style(name, data["defaultStyle"], False)
         # reload geoserver slaves
-        self.reload_gs_slaves()
+        if reload_gs_slaves:
+            self.reload_gs_slaves()
         return True
 
     def publish_postgis_table(self, data, reload_gs_slaves=True, native_crs=None, srs=None, overwrite=False):
@@ -97,9 +102,10 @@ class GeoserverManager():
             self.reload_gs_slaves()
         return True
 
+    #def delete_layer(self, name, purge=True, recurse=True, reload_gs_slaves=True):
     def delete_layer(self, name, purge=True, recurse=True, reload_gs_slaves=True):
         layer = self.gs_master.get_layer(name)
-        self.gs_master.delete(layer, purge, recurse)
+        self.gs_master.delete(layer, purge, False)
         # reload slaves
         if reload_gs_slaves:
             self.reload_gs_slaves()
@@ -120,18 +126,6 @@ class GeoserverManager():
         if reload_gs_master: self.gs_master.reload()
         for gs_slave in  self.gs_slaves:
             self.gs_slave.reload()
-
-# TODO: probably it should be in the metadata handler, here there should be just a check about it
-def sanitize_name(name):
-    """
-    This method clean the names, should be avoided to use dots as names and white spaces
-    :param name: name of the layer
-    :return: sanitized name
-    """
-    name = name.replace(".", "")
-    name = name.replace(" ", "_")
-    name = name.lower()
-    return name
 
 
 def check_name(name, sanitize=True):
