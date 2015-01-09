@@ -13,9 +13,9 @@ class GeoserverManager():
     def __init__(self, config, disable_ssl_certificate_validation=False):
         # settings
         config = config["settings"]["geoserver"]
-        log.info(config["geoserver_master"])
-        log.info(config["password"])
-        log.info(config["username"])
+        # log.info(config["geoserver_master"])
+        # log.info(config["password"])
+        # log.info(config["username"])
         self.config = config
         if "geoserver_master" in config:
             self.gs_master = Catalog(config["geoserver_master"])
