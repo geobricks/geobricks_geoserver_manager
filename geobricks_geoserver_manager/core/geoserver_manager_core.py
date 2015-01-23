@@ -33,6 +33,7 @@ class GeoserverManager():
         geoserver.password = self.config["password"]
 
     def publish_coveragestore(self, path, data, overwrite=False, reload_gs_slaves=True):
+        log.info(data)
         workspace = self.gs_master.get_default_workspace() if "workspace" not in data else self.check_workspace(data["workspace"], False)
         if "layerName" not in data:
             raise Exception("No layerName found in the metadata")
@@ -42,7 +43,7 @@ class GeoserverManager():
         self.gs_master.create_coveragestore(name, path, workspace, overwrite)
         # setting default style
         if "defaultStyle" in data:
-            self.set_style(name, data["defaultStyle"], False)
+            self.set_style(name, workspace.name, data["defaultStyle"], False)
         # reload geoserver slaves
         if reload_gs_slaves:
             self.reload_gs_slaves()
@@ -57,7 +58,7 @@ class GeoserverManager():
             name = data["layerName"]
             title = data["title"] if "title" in data else name
             store = self.gs_master.get_store(data["store"])
-            #if native_crs is None: raise ValueError("must specify native_crs")
+            # #if native_crs is None: raise ValueError("must specify native_crs")
             #srs = srs or native_crs
             feature_type = FeatureType(self, store.workspace, store, name)
             # because name is the in FeatureType base class, work around that
@@ -77,7 +78,8 @@ class GeoserverManager():
 
             # defaultStyle
             if "defaultStyle" in data:
-                self.set_style(name, data["defaultStyle"], False)
+                # TODO: test it
+                self.set_style(name, store.workspace.name, data["defaultStyle"], False)
 
             # reload geoservers
             if reload_gs_slaves:
@@ -87,15 +89,19 @@ class GeoserverManager():
         except Exception, (response, status):
             raise Exception(response, status)
 
-    def set_style(self, layer_name, style_name, reload_gs_slaves=True):
-        layer = self.gs_master.get_layer(layer_name)
+    def set_style(self, layer_name, workspace, style_name, reload_gs_slaves=True):
+        log.info(layer_name)
+        log.info(style_name)
+        log.info(workspace)
+        layer = self.gs_master.get_layer(workspace + ":" +layer_name)
+        log.info(layer)
         layer._set_default_style(style_name)
         self.gs_master.save(layer)
         if reload_gs_slaves:
             self.reload_gs_slaves()
 
-    def delete_store(self, name, purge=True, recurse=True, reload_gs_slaves=True):
-        store = self.gs_master.get_store(name)
+    def delete_store(self, name, workspace=None, purge=True, recurse=True, reload_gs_slaves=True):
+        store = self.gs_master.get_store(name, workspace)
         self.gs_master.delete(store, purge, recurse)
         # reload slaves
         if reload_gs_slaves:
@@ -103,8 +109,8 @@ class GeoserverManager():
         return True
 
     #def delete_layer(self, name, purge=True, recurse=True, reload_gs_slaves=True):
-    def delete_layer(self, name, purge=True, recurse=True, reload_gs_slaves=True):
-        layer = self.gs_master.get_layer(name)
+    def delete_layer(self, name,  workspace=None, purge=True, recurse=True, reload_gs_slaves=True):
+        layer = self.gs_master.get_layer(name, workspace)
         self.gs_master.delete(layer, purge, False)
         # reload slaves
         if reload_gs_slaves:
