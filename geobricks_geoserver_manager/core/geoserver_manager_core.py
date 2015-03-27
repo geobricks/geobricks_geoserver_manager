@@ -100,6 +100,12 @@ class GeoserverManager():
         if reload_gs_slaves:
             self.reload_gs_slaves()
 
+    def publish_style(self, name, data, overwrite=True, reload_gs_slaves=True):
+        # TODO: there is no return in the function (add it to gsconfig library)
+        self.gs_master.create_style(name, data, overwrite)
+        if reload_gs_slaves:
+            self.reload_gs_slaves()
+
     def delete_store(self, name, workspace=None, purge=True, recurse=True, reload_gs_slaves=True):
         store = self.gs_master.get_store(name, workspace)
         self.gs_master.delete(store, purge, recurse)
