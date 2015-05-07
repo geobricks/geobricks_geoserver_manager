@@ -18,15 +18,13 @@ class GeoserverManager():
         # log.info(config["username"])
         self.config = config
         if "geoserver_master" in config:
-            self.gs_master = Catalog(config["geoserver_master"])
-            self._initialize_geoserver(self.gs_master)
+            print config["geoserver_master"]
+            self.gs_master = Catalog(config["geoserver_master"], self.config["username"], self.config["password"])
         else:
             raise Exception('config["geoserver_master"] has to be mapped to a running Geoserver')
         if "geoserver_slaves" in config:
             for gs_slave in config["geoserver_slaves"]:
-                gs = Catalog(gs_slave)
-                self._initialize_geoserver(gs)
-                self.gs_slaves.append(gs)
+                self.gs_slaves.append(Catalog(gs_slave, self.config["username"], self.config["password"]))
 
     def _initialize_geoserver(self, geoserver):
         geoserver.username = self.config["username"]
@@ -39,11 +37,14 @@ class GeoserverManager():
             raise Exception("No layerName found in the metadata")
 
         name = data["layerName"]
+
         # publish
         self.gs_master.create_coveragestore(name, path, workspace, overwrite)
+
         # setting default style
         if "defaultStyle" in data:
             self.set_style(name, workspace.name, data["defaultStyle"], False)
+
         # reload geoserver slaves
         if reload_gs_slaves:
             self.reload_gs_slaves()
@@ -103,6 +104,15 @@ class GeoserverManager():
     def publish_style(self, name, data, overwrite=True, reload_gs_slaves=True):
         # TODO: there is no return in the function (add it to gsconfig library)
         self.gs_master.create_style(name, data, overwrite)
+        print self.gs_master.username, self.gs_master.password
+        if reload_gs_slaves:
+            self.reload_gs_slaves()
+
+    def delete_style(self, name, workspace=None, reload_gs_slaves=True):
+        # TODO: there is no return in the function (add it to gsconfig library)
+        style = self.gs_master.get_style(name, workspace)
+        self.gs_master.delete(style)
+        print self.gs_master.username, self.gs_master.password
         if reload_gs_slaves:
             self.reload_gs_slaves()
 
