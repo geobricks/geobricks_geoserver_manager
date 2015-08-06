@@ -23,7 +23,7 @@ class GeobricksTest(unittest.TestCase):
             'shp': os.path.normpath(os.path.join(os.path.dirname(__file__), 'data/shp/gaul0_malta_4326.shp')),
             'shx': os.path.normpath(os.path.join(os.path.dirname(__file__), 'data/shp/gaul0_malta_4326.shp')),
             'dbf': os.path.normpath(os.path.join(os.path.dirname(__file__), 'data/shp/gaul0_malta_4326.dbf')),
-            'prj':os.path.normpath(os.path.join(os.path.dirname(__file__), 'data/shp/gaul0_malta_4326.prj'))
+            'prj': os.path.normpath(os.path.join(os.path.dirname(__file__), 'data/shp/gaul0_malta_4326.prj'))
         }
         # an alternative could be the zip file, but gsconfig delete it afterwards
         # path = "data/shp/gaul0_malta_4326.zip"
