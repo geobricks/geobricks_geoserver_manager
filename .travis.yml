@@ -23,16 +23,16 @@ install:
   - sudo unzip tomcat_archetype -d /tomcat
   - wget http://sourceforge.net/projects/geoserver/files/GeoServer/2.7.2/geoserver-2.7.2-war.zip
   - unzip geoserver-2.7.2-war.zip geoserver.war
-  - sudo cp geoserver.war /tomcat/webapps/
+  - sudo cp geoserver.war /tomcat/tomcat_archetype/webapps/
   - "pip install -r requirements.txt"
   - "pip install pytest pytest-cov"
   - "pip install -e ."   # install package using setup.py in editable mode
-  - sudo ls -l /tomcat7/webapps/
-  - sudo ls -l /tomcat7/
+  - sudo ls -l /tomcat/tomcat_archetype/webapps/
+  - sudo ls -l /tomcat/tomcat_archetype/
   - curl http://localhost:8080/
   - curl http://localhost:8080/geoserver/index.html
-  - sudo ls -l /tomcat/logs/
-  - sudo tail -1000 /tomcat/logs/catalina.out
+  - sudo ls -l /tomcat/tomcat_archetype/logs/
+  - sudo tail -1000 /tomcat/tomcat_archetype/logs/catalina.out
 
 script:
    - py.test --cov geobricks_geoserver_manager.core --cov-report term-missing
