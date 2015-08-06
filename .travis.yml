@@ -11,7 +11,13 @@ addons:
 jdk:
   - oraclejdk7
 
-install:
+install
+  - sudo apt-get install tomcat7
+  - wget http://sourceforge.net/projects/geoserver/files/GeoServer/2.7.2/geoserver-2.7.2-war.zip
+  - unzip geoserver-2.7.2-war.zip geoserver.war
+  - sudo cp geoserver.war /var/lib/tomcat7/webapps
+  - sudo service tomcat7 start
+  - sleep 15
   - "pip install -r requirements.txt"
   - "pip install pytest pytest-cov"
   - "pip install -e ."   # install package using setup.py in editable mode
