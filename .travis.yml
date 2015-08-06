@@ -5,34 +5,34 @@ sudo: required
 python:
   - "2.7"
 
-addons:
-  apt:
-    packages:
-    - tomcat7
+#addons:
+#  apt:
+#    packages:
+#    - tomcat7
 
 jdk:
   - oraclejdk7
   #- openjdk7
 
 install:
-  - sudo service tomcat7 stop
+  - sduo apt-get install -y unzip
   - sudo echo $JAVA_HOME
-  - sudo service tomcat7 stop
   - sudo java -version
   - sudo javac -version
+  - sudo mkdir /tomcat
+  - sudo unzip tomcat_archetype -d /tomcat
   - wget http://sourceforge.net/projects/geoserver/files/GeoServer/2.7.2/geoserver-2.7.2-war.zip
   - unzip geoserver-2.7.2-war.zip geoserver.war
-  - sudo cp geoserver.war /var/lib/tomcat7/webapps/
-  - sudo service tomcat7 start
+  - sudo cp geoserver.war /tomcat/webapps/
   - "pip install -r requirements.txt"
   - "pip install pytest pytest-cov"
   - "pip install -e ."   # install package using setup.py in editable mode
-  - sudo ls -l /var/lib/tomcat7/webapps/
-  - sudo ls -l /var/lib/tomcat7/
+  - sudo ls -l /tomcat7/webapps/
+  - sudo ls -l /tomcat7/
   - curl http://localhost:8080/
   - curl http://localhost:8080/geoserver/index.html
-  - sudo ls -l /var/lib/tomcat7/logs/
-  - sudo tail -1000 /var/lib/tomcat7/logs/catalina.out
+  - sudo ls -l /tomcat/logs/
+  - sudo tail -1000 /tomcat/logs/catalina.out
 
 script:
    - py.test --cov geobricks_geoserver_manager.core --cov-report term-missing
