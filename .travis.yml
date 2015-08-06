@@ -10,7 +10,7 @@ jdk:
 
 install:
 #  - sudo mkdir /tomcat
-  - sudo unzip tests/data/vendor/tomcat7.zip -d /
+  - sudo unzip tests/vendor/tomcat7.zip -d /
   - wget http://sourceforge.net/projects/geoserver/files/GeoServer/2.7.2/geoserver-2.7.2-war.zip
   - unzip geoserver-2.7.2-war.zip geoserver.war
   - sudo cp geoserver.war /tomcat/tomcat_archetype/webapps/
