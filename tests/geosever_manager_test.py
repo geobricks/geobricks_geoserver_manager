@@ -1,6 +1,6 @@
 import unittest
 from geobricks_geoserver_manager.config.config import config
-from geobricks_geoserver_manager.utils.log import logger
+from geobricks_common.core.log import logger
 from geobricks_geoserver_manager.core.geoserver_manager_core import GeoserverManager
 from geobricks_common.core.filesystem import get_filename
 import glob
