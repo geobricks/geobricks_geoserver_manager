@@ -7,10 +7,9 @@ log = logger(__file__)
 
 class GeoserverManager():
 
-    gs_master = None
-    gs_slaves = []
-
     def __init__(self, config, disable_ssl_certificate_validation=False):
+        self.gs_master = None
+        self.gs_slaves = []
         # settings
         config = config["settings"]["geoserver"]
         # log.info(config["geoserver_master"])
@@ -25,10 +24,6 @@ class GeoserverManager():
         if "geoserver_slaves" in config:
             for gs_slave in config["geoserver_slaves"]:
                 self.gs_slaves.append(Catalog(gs_slave, self.config["username"], self.config["password"]))
-
-    def _initialize_geoserver(self, geoserver):
-        geoserver.username = self.config["username"]
-        geoserver.password = self.config["password"]
 
     def publish_coveragestore(self, path, data, overwrite=False, reload_gs_slaves=True):
         log.info(data)
@@ -90,6 +85,30 @@ class GeoserverManager():
         except Exception, (response, status):
             raise Exception(response, status)
 
+    def publish_shapefile(self, path, data, overwrite=False, reload_gs_slaves=True):
+        try:
+            log.info(data)
+            workspace = self.gs_master.get_default_workspace() if "workspace" not in data else self.check_workspace(data["workspace"], False)
+            if "layerName" not in data:
+                raise Exception("No layerName found in the metadata")
+
+            name = data["layerName"]
+
+            # publish
+            self.gs_master.create_featurestore(name, path, workspace, overwrite)
+
+            # setting default style
+            if "defaultStyle" in data:
+                self.set_style(name, workspace.name, data["defaultStyle"], False)
+
+            # reload geoservers
+            if reload_gs_slaves:
+                self.reload_gs_slaves()
+
+            return True
+        except Exception, (response, status):
+            raise Exception(response, status)
+
     def set_style(self, layer_name, workspace, style_name, reload_gs_slaves=True):
         log.info(layer_name)
         log.info(style_name)
@@ -146,8 +165,11 @@ class GeoserverManager():
 
     def reload_gs_slaves(self, reload_gs_master=False):
         if reload_gs_master: self.gs_master.reload()
-        for gs_slave in  self.gs_slaves:
-            self.gs_slave.reload()
+        for gs_slave in self.gs_slaves:
+            log.info(gs_slave)
+            log.info("reloading... " + str(gs_slave))
+            response = gs_slave.reload()
+            log.info(response)
 
 
 def check_name(name, sanitize=True):
