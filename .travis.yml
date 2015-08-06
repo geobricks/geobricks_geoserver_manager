@@ -9,22 +9,20 @@ jdk:
   - oraclejdk7
 
 install:
-#  - sudo mkdir /tomcat
+
+  # install custom tomcat7
   - sudo unzip tests/vendor/tomcat7.zip -d /
+
+  # install GeoServer
   - wget http://sourceforge.net/projects/geoserver/files/GeoServer/2.7.2/geoserver-2.7.2-war.zip
   - unzip geoserver-2.7.2-war.zip geoserver.war
   - sudo cp geoserver.war /tomcat7/webapps/
   - sudo sh /tomcat7/bin/startup.sh
+
+  # install Python packages
   - "pip install -r requirements.txt"
   - "pip install pytest pytest-cov"
   - "pip install -e ."   # install package using setup.py in editable mode
-  - sudo tail -1000 /tomcat7/logs/catalina.out
-  - sudo ls -l /tomcat7/webapps/
-  - sudo ls -l /tomcat7/
-#  - curl http://localhost:10100/
-#  - curl http://localhost:10100/geoserver/index.html
-  - sudo ls -l /tomcat7/logs/
-  - sudo tail -1000 /tomcat7logs/catalina.out
 
 script:
    - py.test --cov geobricks_geoserver_manager.core --cov-report term-missing
