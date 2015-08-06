@@ -14,6 +14,11 @@ jdk:
   - oraclejdk7
 
 install:
+  - sudo apt-get install python-software-properties
+  - sudo add-apt-repository ppa:webupd8team/java
+  - sudo apt-get update
+  - sudo apt-get install oracle-java7-installer
+  - sudo java -version
   - sudo apt-get install tomcat7
   - wget http://sourceforge.net/projects/geoserver/files/GeoServer/2.7.2/geoserver-2.7.2-war.zip
   - unzip geoserver-2.7.2-war.zip geoserver.war
