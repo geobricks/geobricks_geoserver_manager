@@ -11,8 +11,8 @@ setup(
     long_description=open('README.md').read(),
     description='Geobricks library to manage Geoserver clusters.',
     install_requires=[
-        'gsconfig',
-        'GeobricksCommon'
+        # 'gsconfig',
+        # 'GeobricksCommon'
     ],
     url='http://pypi.python.org/pypi/GeobricksGeoserverManager/',
     keywords=['geobricks', 'geoserver', 'gis', 'gsconfig']

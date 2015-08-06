@@ -6,4 +6,4 @@ install:
   - "pip install pytest pytest-cov"
   - "pip install -e ."   # install package using setup.py in editable mode
 script:
-   - py.test --cov geobricks_common --cov-report term-missing
+   - py.test --cov geobricks_geoserver_manager.core --cov-report term-missing
