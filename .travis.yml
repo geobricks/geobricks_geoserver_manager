@@ -19,6 +19,7 @@ install:
   - sudo apt-get -y update
   - sudo apt-get install -y -f oracle-java7-installer
   - sudo java -version
+  - sudo echo $JAVA_HOME
   - sudo apt-get install tomcat7
   - wget http://sourceforge.net/projects/geoserver/files/GeoServer/2.7.2/geoserver-2.7.2-war.zip
   - unzip geoserver-2.7.2-war.zip geoserver.war
