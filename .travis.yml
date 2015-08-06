@@ -13,7 +13,7 @@ addons:
 jdk:
   - oraclejdk7
 
-install
+install:
   - sudo apt-get install tomcat7
   - wget http://sourceforge.net/projects/geoserver/files/GeoServer/2.7.2/geoserver-2.7.2-war.zip
   - unzip geoserver-2.7.2-war.zip geoserver.war
