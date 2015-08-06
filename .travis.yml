@@ -19,10 +19,12 @@ install:
   - unzip geoserver-2.7.2-war.zip geoserver.war
   - sudo cp geoserver.war /var/lib/tomcat7/webapps
   - sudo service tomcat7 restart
-  - sleep 15
+  #- sleep 15
   - "pip install -r requirements.txt"
   - "pip install pytest pytest-cov"
   - "pip install -e ."   # install package using setup.py in editable mode
+  - curl http://localhost:8080/
+  - curl http://localhost:8080/geoserver/
 
 script:
    - py.test --cov geobricks_geoserver_manager.core --cov-report term-missing
