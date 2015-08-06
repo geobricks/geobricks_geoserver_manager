@@ -14,20 +14,13 @@ jdk:
   - oraclejdk7
 
 install:
-#  - sudo apt-get install -y python-software-properties
-#  - sudo add-apt-repository -y ppa:webupd8team/java
-#  - sudo apt-get -y update
-#  - sudo apt-get install -y -f oracle-java7-installer
   - sudo java -version
   - sudo echo $JAVA_HOME
-#  - sudo apt-get install tomcat7
   - sudo service tomcat7 stop
   - wget http://sourceforge.net/projects/geoserver/files/GeoServer/2.7.2/geoserver-2.7.2-war.zip
   - unzip geoserver-2.7.2-war.zip geoserver.war
   - sudo cp geoserver.war /var/lib/tomcat7/webapps/
-#  - sudo chown tomcat7:tomcat7 /var/lib/tomcat7/ -R
   - sudo service tomcat7 start
-  #- sleep 15
   - "pip install -r requirements.txt"
   - "pip install pytest pytest-cov"
   - "pip install -e ."   # install package using setup.py in editable mode
