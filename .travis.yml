@@ -15,7 +15,7 @@ jdk:
   #- openjdk7
 
 install:
-  - sudo apt-get install -y unzip
+#  - sudo apt-get install -y unzip
   - sudo echo $JAVA_HOME
   - sudo java -version
   - sudo javac -version
