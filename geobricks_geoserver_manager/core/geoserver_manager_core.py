@@ -2,6 +2,7 @@ from geoserver.catalog import Catalog
 from geoserver.resource import FeatureType
 from geobricks_common.core.log import logger
 from geobricks_common.core.filesystem import sanitize_name
+from geobricks_common.core.filesystem import get_filename
 
 log = logger(__file__)
 
@@ -26,7 +27,6 @@ class GeoserverManager():
                 self.gs_slaves.append(Catalog(gs_slave, self.config["username"], self.config["password"]))
 
     def publish_coveragestore(self, path, data, overwrite=False, reload_gs_slaves=True):
-        log.info(data)
         workspace = self.gs_master.get_default_workspace() if "workspace" not in data else self.check_workspace(data["workspace"], False)
         if "layerName" not in data:
             raise Exception("No layerName found in the metadata")
@@ -87,7 +87,6 @@ class GeoserverManager():
 
     def publish_shapefile(self, path, data, overwrite=False, reload_gs_slaves=True):
         try:
-            log.info(data)
             workspace = self.gs_master.get_default_workspace() if "workspace" not in data else self.check_workspace(data["workspace"], False)
             if "layerName" not in data:
                 raise Exception("No layerName found in the metadata")
@@ -110,22 +109,27 @@ class GeoserverManager():
             raise Exception(response, status)
 
     def set_style(self, layer_name, workspace, style_name, reload_gs_slaves=True):
-        log.info(layer_name)
-        log.info(style_name)
-        log.info(workspace)
         layer = self.gs_master.get_layer(workspace + ":" +layer_name)
-        log.info(layer)
         layer._set_default_style(style_name)
         self.gs_master.save(layer)
         if reload_gs_slaves:
             self.reload_gs_slaves()
 
-    def publish_style(self, name, data, overwrite=True, reload_gs_slaves=True):
+    def publish_style(self, path, name=None, workspace=None, overwrite=True, reload_gs_slaves=True):
+        workspace = self.gs_master.get_default_workspace() if workspace is None else workspace
+        data = None
+        with open(path, 'r') as f:
+            data = f.read()
+
+        name = get_filename(path).lower() if name is None else name
+
+        log.info("Uploading Style: %s (overwrite %s) " % (name, overwrite))
+
         # TODO: there is no return in the function (add it to gsconfig library)
-        self.gs_master.create_style(name, data, overwrite)
-        print self.gs_master.username, self.gs_master.password
+        self.gs_master.create_style(name, data, overwrite, workspace)
         if reload_gs_slaves:
             self.reload_gs_slaves()
+        return True
 
     def delete_style(self, name, workspace=None, reload_gs_slaves=True):
         # TODO: there is no return in the function (add it to gsconfig library)

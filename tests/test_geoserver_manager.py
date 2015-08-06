@@ -8,11 +8,14 @@ log = logger(__file__)
 
 class GeobricksTest(unittest.TestCase):
 
+    def setUp(self):
+        self.workspace = "workspace_test"
+
     def test_publish_raster(self):
-        path = os.path.normpath(os.path.join(os.path.dirname(__file__), "data/raster/MOD13A2_3857.tif"))
+        path = getAbsPath("data/raster/MOD13A2_3857.tif")
         data = {
             "layerName": "MOD13A2_3857",
-            "workspace": "workspace_test",
+            "workspace": self.workspace,
         }
         geoserver_manager = GeoserverManager(config)
         result = geoserver_manager.publish_coveragestore(path, data, True)
@@ -20,20 +23,37 @@ class GeobricksTest(unittest.TestCase):
 
     def test_publish_shapefile(self):
         path = {
-            'shp': os.path.normpath(os.path.join(os.path.dirname(__file__), 'data/shp/gaul0_malta_4326.shp')),
-            'shx': os.path.normpath(os.path.join(os.path.dirname(__file__), 'data/shp/gaul0_malta_4326.shp')),
-            'dbf': os.path.normpath(os.path.join(os.path.dirname(__file__), 'data/shp/gaul0_malta_4326.dbf')),
-            'prj': os.path.normpath(os.path.join(os.path.dirname(__file__), 'data/shp/gaul0_malta_4326.prj'))
+            'shp': getAbsPath('data/shp/gaul0_malta_4326.shp'),
+            'shx': getAbsPath('data/shp/gaul0_malta_4326.shx'),
+            'dbf': getAbsPath('data/shp/gaul0_malta_4326.dbf'),
+            'prj': getAbsPath('data/shp/gaul0_malta_4326.prj')
         }
         # an alternative could be the zip file, but gsconfig delete it afterwards
         # path = "data/shp/gaul0_malta_4326.zip"
         data = {
             "layerName": "gaul0_malta_4326",
-            "workspace": "workspace_test",
+            "workspace": self.workspace,
         }
         geoserver_manager = GeoserverManager(config)
         result = geoserver_manager.publish_shapefile(path, data, True)
         self.assertEqual(result, True)
+
+    def test_publish_sld(self):
+        path = getAbsPath('data/sld/test.sld')
+        # TODO: use the same structure also for the SLD?
+        # an alternative could be the zip file, but gsconfig delete it afterwards
+        # path = "data/shp/gaul0_malta_4326.zip"
+        # data = {
+        #     "layerName": "gaul0_malta_4326",
+        #     "workspace": self.workspace,
+        # }
+        geoserver_manager = GeoserverManager(config)
+        result = geoserver_manager.publish_style(path, None, self.workspace, True)
+        self.assertEqual(result, True)
+
+
+def getAbsPath(path):
+    return os.path.normpath(os.path.join(os.path.dirname(__file__), path))
 
 
 def run_test():

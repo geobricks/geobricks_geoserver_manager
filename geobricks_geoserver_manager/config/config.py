@@ -23,6 +23,7 @@ config = {
         # geoserver settings
         "geoserver": {
             "geoserver_slaves": [],
+            # "geoserver_master": "http://localhost:3333/geoserver/rest",
             "geoserver_master": "http://localhost:8080/geoserver/rest",
             "username": "admin",
             "password": "geoserver",
