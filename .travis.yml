@@ -17,7 +17,8 @@ install:
   - sudo apt-get install tomcat7
   - wget http://sourceforge.net/projects/geoserver/files/GeoServer/2.7.2/geoserver-2.7.2-war.zip
   - unzip geoserver-2.7.2-war.zip geoserver.war
-  - cp geoserver.war /var/lib/tomcat7/webapps/
+  - sudo cp geoserver.war /var/lib/tomcat7/webapps/
+  - sudo chown tomcat:tomcat /var/lib/tomcat7/webapps/geoserver.war -R
   - sudo service tomcat7 restart
   #- sleep 15
   - "pip install -r requirements.txt"
