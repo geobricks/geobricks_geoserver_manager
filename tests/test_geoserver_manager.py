@@ -6,12 +6,10 @@ from geobricks_common.core.log import logger
 
 log = logger(__file__)
 
-
-
 class GeobricksTest(unittest.TestCase):
 
     def test_publish_raster(self):
-        path = os.path.abspath("data/raster/MOD13A2_3857.tif")
+        path = os.path.normpath(os.path.join(os.path.dirname(__file__), "data/raster/MOD13A2_3857.tif"))
         data = {
             "layerName": "MOD13A2_3857",
             "workspace": "workspace_test",
@@ -22,10 +20,10 @@ class GeobricksTest(unittest.TestCase):
 
     def test_publish_shapefile(self):
         path = {
-            'shp': os.path.abspath('data/shp/gaul0_malta_4326.shp'),
-            'shx': os.path.abspath('data/shp/gaul0_malta_4326.shp'),
-            'dbf': os.path.abspath('data/shp/gaul0_malta_4326.dbf'),
-            'prj': os.path.abspath('data/shp/gaul0_malta_4326.prj')
+            'shp': os.path.normpath(os.path.join(os.path.dirname(__file__), 'data/shp/gaul0_malta_4326.shp')),
+            'shx': os.path.normpath(os.path.join(os.path.dirname(__file__), 'data/shp/gaul0_malta_4326.shp')),
+            'dbf': os.path.normpath(os.path.join(os.path.dirname(__file__), 'data/shp/gaul0_malta_4326.dbf')),
+            'prj':os.path.normpath(os.path.join(os.path.dirname(__file__), 'data/shp/gaul0_malta_4326.prj'))
         }
         # an alternative could be the zip file, but gsconfig delete it afterwards
         # path = "data/shp/gaul0_malta_4326.zip"
