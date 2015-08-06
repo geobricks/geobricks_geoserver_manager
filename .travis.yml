@@ -11,13 +11,15 @@ addons:
     - tomcat7
 
 jdk:
-#  - oraclejdk7
-  - openjdk7
+  - oraclejdk7
+  #- openjdk7
 
 install:
-  - sudo java -version
+  - sudo service tomcat7 stop
   - sudo echo $JAVA_HOME
   - sudo service tomcat7 stop
+  - sudo java -version
+  - sudo javac -version
   - wget http://sourceforge.net/projects/geoserver/files/GeoServer/2.7.2/geoserver-2.7.2-war.zip
   - unzip geoserver-2.7.2-war.zip geoserver.war
   - sudo cp geoserver.war /var/lib/tomcat7/webapps/
