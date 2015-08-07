@@ -1,2 +1,6 @@
 include *.md *.txt *.json
 recursive-include geobricks_geoserver_manager *
+recursive-exclude tests *
+recursive-exclude examples *
+global-exclude *_dev.py
+global-exclude .gitignore
